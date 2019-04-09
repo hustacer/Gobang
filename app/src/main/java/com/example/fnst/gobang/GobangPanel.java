@@ -17,11 +17,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GobangPanel extends View {
+public class GobangPanel extends View{
     private int mPanelWidth;
     private float mLineHeight;
     private int MAX_LINE = 10;
-    private int MAX_CHECK_IN_LINE = 5;
 
     private Paint mPaint = new Paint();
 
@@ -37,9 +36,11 @@ public class GobangPanel extends View {
 
     private boolean mIsGameOver;
     private boolean mIsWhiteWinner;
+    private Context mContext;
 
     public GobangPanel(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        mContext = context;
         init();
     }
 
@@ -132,8 +133,12 @@ public class GobangPanel extends View {
     }
 
     private void checkGameOver() {
-        boolean whiteWin = checkFiveInLine(mWhiteArray);
-        boolean blackWin = checkFiveInLine(mBlackArray);
+//        boolean whiteWin = CheckWinnerUtils.checkFiveInLine(mWhiteArray);
+//        boolean blackWin = CheckWinnerUtils.checkFiveInLine(mBlackArray);
+        CheckWinAdapter wCheckWinAdapter = new CheckWinAdapter(mContext, mWhiteArray);
+        boolean whiteWin = wCheckWinAdapter.checkFiveInLine();
+        CheckWinAdapter bCheckWinAdapter = new CheckWinAdapter(mContext, mWhiteArray);
+        boolean blackWin = bCheckWinAdapter.checkFiveInLine();
 
         if (whiteWin || blackWin) {
             mIsGameOver = true;
@@ -142,130 +147,6 @@ public class GobangPanel extends View {
             String text = mIsWhiteWinner ? "White Win!" : "Black Win!";
             Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean checkFiveInLine(List<Point> points) {
-        for (Point p : points) {
-            int x = p.x;
-            int y = p.y;
-
-            boolean win = checkHorizontal(x, y, points);
-            if (win) return true;
-            win = checkVertical(x, y, points);
-            if (win) return true;
-            win = checkLeftDiagonal(x, y, points);
-            if (win) return true;
-            win = checkRightDiagonal(x, y, points);
-            if (win) return true;
-
-        }
-
-        return false;
-    }
-
-    private boolean checkHorizontal(int x, int y, List<Point> points) {
-        int count = 1;
-        // left
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x - i, y))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-
-        // right
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x + i, y))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
-    }
-
-    private boolean checkVertical(int x, int y, List<Point> points) {
-        int count = 1;
-        // up
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x, y + i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-
-        // down
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x, y - i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
-    }
-
-    private boolean checkLeftDiagonal(int x, int y, List<Point> points) {
-        int count = 1;
-        // up
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x - i, y + i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-
-        // down
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x + i, y - i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
-    }
-
-    private boolean checkRightDiagonal(int x, int y, List<Point> points) {
-        int count = 1;
-        // up
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x + i, y + i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-
-        // down
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x - i, y - i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
-    }
-
-    // check if count is five
-    private boolean checkFive(int count) {
-        if ( count == MAX_CHECK_IN_LINE) {
-            return true;
-        }
-
-        return false;
     }
 
     private void drawBoard(Canvas canvas) {
