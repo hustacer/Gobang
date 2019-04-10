@@ -36,99 +36,111 @@ public class CheckWinAdapter {
     }
 
     private static boolean checkHorizontal(int x, int y, List<Point> points) {
-        int count = 1;
+        int countL = 1;
+        int countR = 1;
         // left
         for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
             if(points.contains(new Point(x - i, y))) {
-                count++;
+                countL++;
+            } else if (points.contains(new Point(x + i, y))) {
+                countR++;
             }
             else {
                 break;
             }
         }
-
-        // right
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x + i, y))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
+//
+//        // right
+//        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
+//            if(points.contains(new Point(x + i, y))) {
+//                count++;
+//            }
+//            else {
+//                break;
+//            }
+//        }
+        return (checkFive(countL + countR - 1));
     }
 
     private static boolean checkVertical(int x, int y, List<Point> points) {
-        int count = 1;
+        int countUp = 1;
+        int countDown = 1;
         // up
         for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
             if(points.contains(new Point(x, y + i))) {
-                count++;
+                countUp++;
+            } else if(points.contains(new Point(x, y - i))) {
+                countDown++;
             }
             else {
                 break;
             }
         }
-
-        // down
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x, y - i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
+//
+//        // down
+//        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
+//            if(points.contains(new Point(x, y - i))) {
+//                count++;
+//            }
+//            else {
+//                break;
+//            }
+//        }
+        return (checkFive(countUp + countDown - 1));
     }
 
     private static boolean checkLeftDiagonal(int x, int y, List<Point> points) {
-        int count = 1;
+        int countUp = 1;
+        int countDown = 1;
         // up
         for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
             if(points.contains(new Point(x - i, y + i))) {
-                count++;
+                countUp++;
+            } else if(points.contains(new Point(x + i, y - i))) {
+                countDown++;
             }
             else {
                 break;
             }
         }
-
-        // down
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x + i, y - i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
+//
+//        // down
+//        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
+//            if(points.contains(new Point(x + i, y - i))) {
+//                count++;
+//            }
+//            else {
+//                break;
+//            }
+//        }
+        return (checkFive(countUp + countDown - 1));
     }
 
     private static boolean checkRightDiagonal(int x, int y, List<Point> points) {
-        int count = 1;
+        int countUp = 1;
+        int countDown = 1;
         // up
         for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
             if(points.contains(new Point(x + i, y + i))) {
-                count++;
+                countUp++;
+            } else if(points.contains(new Point(x - i, y - i))) {
+                countDown++;
             }
             else {
                 break;
             }
         }
-
-        // down
-        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
-            if(points.contains(new Point(x - i, y - i))) {
-                count++;
-            }
-            else {
-                break;
-            }
-        }
-        return (checkFive(count));
+//
+//        // down
+//        for (int i = 1; i < MAX_CHECK_IN_LINE; i++) {
+//            if(points.contains(new Point(x - i, y - i))) {
+//                count++;
+//            }
+//            else {
+//                break;
+//            }
+//        }
+        return (checkFive(countUp + countDown - 1));
     }
 
     // check if count is five
